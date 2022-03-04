@@ -139,23 +139,44 @@ bool LinkedList::Remove(size_t position, string &value) {
     for (int i = 0; i < position - 1; ++i) {
         tmp = tmp->next;
     }
-
+    value = tmp->next->data;
+    Node* toDelete = tmp->next;
+    tmp->next = toDelete->next;
+    toDelete->next = nullptr;
+    delete toDelete;
+    return true;
 }
 
 bool LinkedList::Get(size_t position, string &value) const {
-    return false;
+    if (position >= _size)
+        return false;
+    Node* tmp = _head;
+    for (int i = 0; i < position; ++i) {
+        tmp = tmp->next;
+    }
+    value = tmp->data;
+    return true;
 }
 
 int LinkedList::Find(const string &value, size_t start) const {
-    return 0;
+    if (start >= _size)
+        return -1;
+    Node* tmp = _head;
+    for (int i = start; i < _size; ++i) {
+        if (tmp->data == value)
+            return i;
+        tmp = tmp->next;
+    }
+    return -1;
 }
 
 void LinkedList::Write(ostream &output) const {
-
+    for (Node* tmp = _head; tmp != nullptr; tmp = tmp->next)
+        output << tmp->data << "\n";
 }
 
 size_t LinkedList::Size() const {
-    return 0;
+    return _size;
 }
 
 
@@ -163,5 +184,5 @@ LinkedList::LinkedList(const LinkedList& other){
 
 }
 const LinkedList& LinkedList::operator=(const LinkedList& rhs){
-
+    return *this;
 }
